@@ -1,0 +1,176 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Net;
+
+public partial class _Default1 : Page
+{
+    private List<string> list = new List<string>();
+    private CVOrDataContext dal = new CVOrDataContext();
+
+    public string getPageSource(string URL)
+    {
+        WebClient webClient = new WebClient();
+        string strSource = webClient.DownloadString(URL);
+        webClient.Dispose();
+        return strSource;
+    }
+
+    protected void runJob_Click(object sender, EventArgs e)
+    {
+        LastID lastID = this.dal.LastIDs.SingleOrDefault(y => y.LastIDr == "1");
+        if (lastID == null)
+        {
+            return;
+        }
+
+        StreamWriter writer = new StreamWriter(@"C:\Or\Web\CV\mails.txt", true);
+
+        int count = 0;
+        int totalCount = 0;
+
+        if (this.Session["total"] != null)
+        {
+            totalCount = (int)this.Session["total"];
+        }
+
+        if (!string.IsNullOrEmpty(this.getAddress1.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress1.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+
+        totalCount += count;
+        this.Session["total"] = totalCount;
+
+        this.doneLabel.Text = count.ToString();
+        this.totalLabel.Text = totalCount.ToString();
+
+        this.getAddress1.Text = string.Empty;
+
+        if (writer != null)
+        {
+            writer.Close();
+        }
+
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            List<string> list = new List<string>();
+            StreamReader r = new StreamReader(@"C:\Or\Web\CV\mails.txt");
+
+            StringBuilder build = new StringBuilder();
+
+            while (!r.EndOfStream)
+            {
+                build.Append(r.ReadLine());
+            }
+
+            string[] stringer = build.ToString().Split(',');
+            foreach (string m in stringer)
+            {
+                if (!list.Contains(m))
+                {
+                    this.list.Add(m);
+                }
+            }
+
+            this.doneLabel.Text = "0";
+            this.totalLabel.Text = stringer.Count().ToString();
+
+            this.Session["total"] = stringer.Count();
+            this.Session["list"] = list;
+
+            r.Close();
+        }
+    }
+
+    private int GetMails(string source, StreamWriter writer, LastID lastID)
+    {
+        if (this.Session["list"] != null)
+        {
+            this.list = (List<string>)this.Session["list"];
+        }
+
+        string g = this.getPageSource(source);
+
+        long result = 0;
+        int count = 0;
+
+        Regex regx = new Regex("http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?", RegexOptions.IgnoreCase);
+        MatchCollection mactches = regx.Matches(g);
+        foreach (Match match in mactches)
+        {
+            string q = match.Value.ToLower();
+            if (q.Contains("google") || q.Contains("schema.org"))
+            {
+                continue;
+            }
+
+            string gf = HttpUtility.UrlDecode(q);
+            string vd = this.getPageSource(gf);
+
+            Regex t = new Regex(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+            foreach (Match m in t.Matches(vd))
+            {
+                if (!list.Contains(m.Value))
+                {
+                    Mail f = dal.Mails.SingleOrDefault(b => b.Mail1 == m.Value);
+                    if (f == null)
+                    {
+                        try
+                        {
+                            result = lastID.LastIDID;
+
+                            string mail = ClearEmail(m.Value);
+
+                            dal.Mails.InsertOnSubmit(new Mail
+                            {
+                                Mail1 = mail,
+                                MailID = (result + 1).ToString(),
+                            });
+
+                            lastID.LastIDID++;
+
+                            dal.SubmitChanges();
+
+                            this.list.Add(mail);
+                            writer.Write(mail + ", ");
+                            count++;
+                        }
+                        catch (Exception) { }
+                    }
+                }
+            }
+        }
+
+        this.Session["list"] = this.list;
+        return count;
+    }
+
+    public string ClearEmail(string mail)
+    {
+        return mail.Replace("/", "")
+                   .Replace("\\", "")
+                   .Replace("!", "")
+                   .Replace("'", "")
+                   .Replace("\"", "")
+                   .Replace("|", "")
+                   .Replace(".co.i", ".co.il")
+                   .Replace(".co.ill", ".co.il")
+                   .Replace("mail=", "")
+                   .Replace("^", "");
+    }
+}

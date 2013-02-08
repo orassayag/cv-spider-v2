@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="CVBilly2" Class="CVImaDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=OR-PC;AttachDbFilename=|DataDirectory|\CVBilly2.mdf;Initial Catalog=CVBilly2;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="CVBilly2ConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CVMail" Member="CVMails">
+    <Type Name="CVMail">
+      <Column Name="Mail" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="asdws" Type="System.Int64" DbType="BigInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LastID" Member="LastIDs">
+    <Type Name="LastID">
+      <Column Name="sdfsdgdf" Type="System.String" DbType="NChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LastID" Member="LastID1" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

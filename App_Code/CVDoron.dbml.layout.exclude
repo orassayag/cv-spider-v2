@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="CVDoron">
+  <DataContextMoniker Name="/CVDoronDataContext" />
+  <nestedChildShapes>
+    <classShape Id="a69265b6-ac1b-484e-a19a-56fd35a59877" absoluteBounds="0.75, 0.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/CVDoronDataContext/LastID" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f0f24246-e7fa-46eb-b901-8c939f960f11" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="efcb7e83-ec8f-40e2-a3f8-d74592efc8a3" absoluteBounds="0.75, 2.75, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/CVDoronDataContext/Mail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="212dc411-0286-47f3-b171-f839b8dc4671" absoluteBounds="0.765, 3.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -1,0 +1,385 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Net;
+
+public partial class _Default : Page
+{
+    private List<string> list = new List<string>();
+    private CVOrDataContext dal = new CVOrDataContext();
+
+    public string getPageSource(string URL)
+    {
+        WebClient webClient = new WebClient();
+        string strSource = webClient.DownloadString(URL);
+        webClient.Dispose();
+        return strSource;
+    }
+
+    protected void runJob_Click(object sender, EventArgs e)
+    {
+        LastID lastID = this.dal.LastIDs.SingleOrDefault(y => y.LastIDr == "1");
+        if (lastID == null)
+        {
+            return;
+        }
+
+        StreamWriter writer = new StreamWriter(@"C:\Or\Web\CV\mails.txt", true);
+
+        int count = 0;
+        int totalCount = 0;
+
+        if (this.Session["total"] != null)
+        {
+            totalCount = (int)this.Session["total"];
+        }
+
+        if (!string.IsNullOrEmpty(this.getAddress1.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress1.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress2.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress2.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress3.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress3.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress4.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress4.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress5.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress5.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress6.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress6.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress7.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress7.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress8.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress8.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress9.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress9.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress10.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress10.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+
+        if (!string.IsNullOrEmpty(this.getAddress11.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress11.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress12.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress12.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress13.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress13.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress14.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress14.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress15.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress15.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress16.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress16.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress17.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress17.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        if (!string.IsNullOrEmpty(this.getAddress18.Text))
+        {
+            try
+            {
+                count += this.GetMails(this.getAddress18.Text, writer, lastID);
+            }
+            catch (Exception) { }
+        }
+        //if (!string.IsNullOrEmpty(this.getAddress19.Text))
+        //{
+        //    try
+        //    {
+        //        count += this.GetMails(this.getAddress19.Text, writer, lastID);
+        //    }
+        //    catch (Exception) { }
+        //}
+        //if (!string.IsNullOrEmpty(this.getAddress20.Text))
+        //{
+        //    try
+        //    {
+        //        count += this.GetMails(this.getAddress20.Text, writer, lastID);
+        //    }
+        //    catch (Exception) { }
+        //}
+        //if (!string.IsNullOrEmpty(this.getAddress21.Text))
+        //{
+        //    try
+        //    {
+        //        count += this.GetMails(this.getAddress21.Text, writer, lastID);
+        //    }
+        //    catch (Exception) { }
+        //}
+        //if (!string.IsNullOrEmpty(this.getAddress22.Text))
+        //{
+        //    try
+        //    {
+        //        count += this.GetMails(this.getAddress22.Text, writer, lastID);
+        //    }
+        //    catch (Exception) { }
+        //}
+
+        totalCount += count;
+        this.Session["total"] = totalCount;
+
+        this.doneLabel.Text = count.ToString();
+        this.totalLabel.Text = totalCount.ToString();
+
+        this.getAddress1.Text = string.Empty;
+        this.getAddress2.Text = string.Empty;
+        this.getAddress3.Text = string.Empty;
+        this.getAddress4.Text = string.Empty;
+        this.getAddress5.Text = string.Empty;
+        this.getAddress6.Text = string.Empty;
+        this.getAddress7.Text = string.Empty;
+        this.getAddress8.Text = string.Empty;
+        this.getAddress9.Text = string.Empty;
+        this.getAddress10.Text = string.Empty;
+        this.getAddress11.Text = string.Empty;
+        this.getAddress12.Text = string.Empty;
+        this.getAddress13.Text = string.Empty;
+        this.getAddress14.Text = string.Empty;
+        this.getAddress15.Text = string.Empty;
+        this.getAddress16.Text = string.Empty;
+        this.getAddress17.Text = string.Empty;
+        this.getAddress18.Text = string.Empty;
+        //this.getAddress19.Text = string.Empty;
+        //this.getAddress20.Text = string.Empty;
+        //this.getAddress21.Text = string.Empty;
+        //this.getAddress22.Text = string.Empty;
+
+        if (writer != null)
+        {
+            writer.Close();
+        }
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!Page.IsPostBack)
+        {
+            List<string> list = new List<string>();
+            StreamReader r = new StreamReader(@"C:\Or\Web\CV\mails.txt");
+
+            StringBuilder build = new StringBuilder();
+
+            while (!r.EndOfStream)
+            {
+                build.Append(r.ReadLine());
+            }
+
+            string[] stringer = build.ToString().Split(',');
+            foreach (string m in stringer)
+            {
+                if (!list.Contains(m))
+                {
+                    this.list.Add(m);
+                }
+            }
+
+            this.doneLabel.Text = "0";
+            this.totalLabel.Text = stringer.Count().ToString();
+
+            this.Session["total"] = stringer.Count();
+            this.Session["list"] = list;
+
+            r.Close();
+        }
+    }
+
+    private int GetMails(string source, StreamWriter writer, LastID lastID)
+    {
+        if (this.Session["list"] != null)
+        {
+            this.list = (List<string>)this.Session["list"];
+        }
+
+        string g = this.getPageSource(source);
+
+        long result = 0;
+        int count = 0;
+
+        Regex t = new Regex(@"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+        foreach (Match m in t.Matches(g))
+        {
+            if (!list.Contains(m.Value))
+            {
+                string mail = ClearEmail(m.Value);
+
+                Mail f = dal.Mails.SingleOrDefault(b => b.Mail1 == mail);
+                if (f == null)
+                {
+                    try
+                    {
+                        result = lastID.LastIDID;
+
+                        dal.Mails.InsertOnSubmit(new Mail
+                        {
+                            Mail1 = mail,
+                            MailID = (result + 1).ToString(),
+                        });
+
+                        lastID.LastIDID++;
+
+                        dal.SubmitChanges();
+
+                        this.list.Add(mail);
+                        writer.Write(mail + ", ");
+                        count++;
+                    }
+                    catch (Exception) { }
+                }
+            }
+        }
+
+        this.Session["list"] = this.list;
+        return count;
+    }
+
+    public string ClearEmail(string mail)
+    {
+        string result = string.Empty;
+        result = mail.Replace("/", "")
+                      .Replace("\\", "")
+                      .Replace("!", "")
+                      .Replace("'", "")
+                      .Replace("\"", "")
+                      .Replace("?", "")
+                      .Replace(".coil",".co.il")
+                      .Replace(".ilm",".il")
+                      .Replace("%", "")
+                      .Replace("|", "")
+                      .Replace("org.i","org.il")
+                      .Replace("con", "com")
+                      .Replace(".co.ili", ".co.il")
+                      .Replace(".njet",".net")
+                      .Replace(".net.i", ".net.il")
+                      .Replace(".met", ".net")
+                      .Replace(".co.oil", ".co.il")
+                      .Replace(".ill", ".il")
+                      .Replace(".co.i", ".co.il")
+                      .Replace(".walla.c",".walla.com")
+                      .Replace(".com2", ".com")
+                      .Replace("@.", "@")
+                      .Replace(".co.ill", ".co.il")
+                      .Replace(".walla.co",".walla.co.il")
+                      .Replace("gmail.comm","gmail.com")
+                      .Replace("gmail.com.il","gmail.com")
+                      .Replace(".org.ill", ".org.il")
+                      .Replace(".gov.i", ".gov.il")
+                      .Replace(".walla.cil", ".walla.co.il")
+                      .Replace("gmail.co","gmail.com")
+                      .Replace("mailto%20","")        
+                      .Replace("mailto:", "")
+                      .Replace("mailto", "")
+                      .Replace("%20","")
+                      .Replace(".muni.i","muni.il")
+                      .Replace("^", "");
+        if (result.Contains('='))
+        {
+            result = result.Split('=')[1];
+        }
+        result = result.Replace(".comm", ".com");
+        result = result.Replace(".co.ill", ".co.il");
+        return result;
+    }
+}
