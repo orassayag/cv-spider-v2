@@ -1,6 +1,6 @@
 # CV Spider V2
 
-Second version of CV spider that search with Walla search that uses Google search in view source, and also do the same with BING search engine, emails that matches some keys, and send automatic emails that found.
+Built in February 2013. This is the second version of CV spider that search with Walla search that uses Google search in view source, and also do the same with BING search engine, emails that matches some keys, and send automatic emails that found.
 
 ## Getting Started
 
@@ -9,7 +9,6 @@ Clone the project to your computer.
 ### Prerequisites
 
 You'll need to install .Net and SQL, and to build new LINQ-to-SQL map layout in order to make it work.
-
 
 ## Built With
 
