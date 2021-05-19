@@ -1,6 +1,6 @@
 # CV Spider V2
 
-Built in February 2013. This is the second version of CV spider that searches with Walla search that uses Google search in view source, and also does the same with BING search engine, emails that match some keys, and send automatic emails that are found.
+Built in February 2013. This is the second version of CV spider that searches with Walla search that uses Google search in view source, and also does the same with Bing search engine, emails that match some keys, and send automatic emails that are found.
 
 ## Getting Started
 
