@@ -1,0 +1,57 @@
+{
+  "name": "cv-spider-v2",
+  "version": "2.0.0",
+  "description": "ASP.NET web application that automates job search email collection by scraping Israeli search engines for job listings and extracting contact email addresses",
+  "main": "Default.aspx",
+  "scripts": {
+    "info": "echo 'This is an ASP.NET Web Forms application. Use Visual Studio or IIS to run.'",
+    "setup": "echo 'Please follow INSTRUCTIONS.md for setup details'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orassayag/cv-spider-v2.git"
+  },
+  "keywords": [
+    "web-scraping",
+    "email-extraction",
+    "job-search",
+    "asp.net",
+    "csharp",
+    "linq-to-sql",
+    "sql-server",
+    "web-crawler",
+    "israeli-jobs",
+    "hebrew",
+    "automation",
+    "data-collection",
+    "email-scraper",
+    "walla-search",
+    "bing-search",
+    "recruitment",
+    "cv-collection"
+  ],
+  "author": {
+    "name": "Or Assayag",
+    "email": "orassayag@gmail.com",
+    "url": "https://github.com/orassayag"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/orassayag/cv-spider-v2/issues"
+  },
+  "homepage": "https://github.com/orassayag/cv-spider-v2#readme",
+  "engines": {
+    "dotnet": ">=3.5"
+  },
+  "os": [
+    "win32"
+  ],
+  "technologies": {
+    "framework": "ASP.NET Web Forms",
+    "language": "C#",
+    "database": "SQL Server",
+    "orm": "LINQ-to-SQL",
+    "runtime": ".NET Framework 3.5",
+    "server": "IIS (Internet Information Services)"
+  }
+}
