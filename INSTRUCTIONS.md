@@ -1,14 +1,51 @@
 # Instructions
 
+## Table of Contents
+
+1. [Version](#version)
+2. [Last Updated](#last-updated)
+3. [Prerequisites](#prerequisites)
+   - [System Requirements](#system-requirements)
+4. [Initial Setup](#initial-setup)
+   - [Install Dependencies](#install-dependencies)
+5. [Setup and Usage Instructions](#setup-and-usage-instructions)
+6. [Available Commands](#available-commands)
+   - [Development Commands](#development-commands)
+   - [Running Scripts](#running-scripts)
+7. [Best Practices](#best-practices)
+8. [Documentation](#documentation)
+9. [Extending the Application](#extending-the-application)
+10. [External Resources](#external-resources)
+
+## Version
+
+**Current Version**: 2.0.0
+
+## Last Updated
+
+**Date**: 2026-06-09
+
 ## Setup Instructions
 
 ### Prerequisites
 
-1. **Windows Operating System** (for IIS hosting)
-2. **.NET Framework 3.5** or higher
-3. **SQL Server** (2008 or higher recommended)
-4. **Visual Studio** (2010 or higher) or any ASP.NET compatible IDE
-5. **IIS (Internet Information Services)** for hosting
+#### System Requirements
+
+- **Operating System**: Windows 7/8/10/11 or Windows Server 2008+
+- **Framework**: .NET Framework 3.5 Service Pack 1 or higher
+- **Database**: SQL Server 2008, 2012, 2014, 2016, 2019, or 2022 (Express editions supported)
+- **Web Server**: IIS 7.0 or higher with ASP.NET enabled
+- **IDE**: Visual Studio 2010 or higher (Visual Studio 2022 recommended)
+- **RAM**: 2GB minimum (4GB recommended for Visual Studio)
+- **Disk Space**: 100MB for application + database growth
+
+### Initial Setup
+
+#### Install Dependencies
+
+1. **.NET Framework**: Ensure .NET Framework 3.5 is enabled in Windows Features.
+2. **SQL Server**: Install SQL Server Express if you don't have a database server.
+3. **IIS**: Enable "Internet Information Services" and "ASP.NET" in Windows Features.
 
 ### Installation
 
@@ -17,6 +54,38 @@
 3. Set up the SQL Server database (see Database Setup below)
 4. Update the connection string in `web.config`
 5. Build the LINQ-to-SQL mapping (see LINQ-to-SQL Setup below)
+
+## Setup and Usage Instructions
+
+This application is designed to be hosted on IIS and accessed via a web browser. The primary interaction points are HTTP handlers (`.ashx`) and Web Forms (`.aspx`).
+
+### Getting Started
+
+1. **Verify Database Connectivity**: Ensure your SQL Server is running and the connection string in `web.config` is correct.
+2. **Host on IIS**: For best performance, host the project on a local IIS server rather than using the Visual Studio development server.
+3. **Access the Application**: Navigate to `http://localhost/cv-spider-v2/` in your browser.
+
+## Available Commands
+
+### Development Commands
+
+While this is a web application, you can use the following "commands" (actions) during development:
+
+- **Build Solution**: Press `Ctrl + Shift + B` in Visual Studio to compile all components.
+- **Run with Debugging**: Press `F5` to start the application with the debugger attached.
+- **Run without Debugging**: Press `Ctrl + F5` for faster startup without the debugger.
+- **Regenerate ORM**: Right-click `CVIma2.dbml` and select "Run Custom Tool" if the database schema changes.
+
+### Running Scripts
+
+The application uses HTTP Handlers as "scripts" that can be triggered manually or via scheduled tasks:
+
+- **Fetch Mails Script**: `GET /FetchMails.ashx`
+  - Triggers the scraping and extraction process.
+- **Print Mails Script**: `GET /PrintMails.ashx`
+  - Exports/displays the collected data.
+- **Legacy Interface**: `GET /WallaSearch.aspx`
+  - Interactive search and validation page.
 
 ## Database Setup
 
@@ -50,8 +119,8 @@ INSERT INTO LastIDs (sdfsdgdf, LastID1) VALUES ('1', 0);
 2. Update the connection string:
    ```xml
    <connectionStrings>
-     <add name="DB" 
-          connectionString="Data Source=YOUR_SERVER;Initial Catalog=CVBilly3;Integrated Security=True;" 
+     <add name="DB"
+          connectionString="Data Source=YOUR_SERVER;Initial Catalog=CVBilly3;Integrated Security=True;"
           providerName="System.Data.SqlClient" />
    </connectionStrings>
    ```
@@ -87,9 +156,11 @@ The application randomly combines the following parameters to create search quer
 ### Search Query Format
 
 The application generates search queries in the format:
+
 ```
 דרושים [PROFESSION] ב[CITY] [MAIL_TYPE]
 ```
+
 Example: "דרושים מנהלת משרד בכפר סבא מייל"
 
 ## Running the Application
@@ -120,14 +191,17 @@ Example: "דרושים מנהלת משרד בכפר סבא מייל"
 **Endpoint**: `/FetchMails.ashx`
 
 **Parameters**:
+
 - `i` (optional): Previous count to add to the result
 
 **Example**:
+
 ```
 http://localhost/cv-spider-v2/FetchMails.ashx?i=100
 ```
 
 **How it works**:
+
 1. Generates random search query from cities, professions, and mail types
 2. Searches Walla search engine (pages 2-11)
 3. Extracts URLs from search results
@@ -139,6 +213,7 @@ http://localhost/cv-spider-v2/FetchMails.ashx?i=100
 ### Email Validation
 
 The application performs several validation steps:
+
 1. Checks for `@` symbol
 2. Rejects image file extensions (.jpg, .png)
 3. Validates minimum length for email parts
@@ -147,6 +222,7 @@ The application performs several validation steps:
 ### Email Cleaning
 
 The `ClearEmail` method fixes common issues:
+
 - Removes special characters
 - Corrects Israeli domain typos (.co → .co.il)
 - Fixes common misspellings (.con → .com)
@@ -185,6 +261,34 @@ cv-spider-v2/
 - **Database Growth**: The `CVMails` table will grow over time; implement archiving if needed
 - **Concurrent Access**: The application uses locking for thread-safe database operations
 
+## Best Practices
+
+1. **Thread Safety**: Always use the `lock(typeof(DAL))` or similar patterns when performing write operations to the database to prevent deadlocks and race conditions.
+2. **Regex Performance**: Test regex patterns against large HTML samples to ensure they don't cause ReDoS (Regular Expression Denial of Service).
+3. **Data Cleaning**: Periodically review the `ClearEmail` method to add new common typos found in the field.
+4. **Error Logging**: Check the IIS logs or implement a custom logger in `App_Code` to track scraping failures.
+5. **SQL Indexing**: Ensure the `Mail` column in `CVMails` is indexed (it is by default as a UNIQUE constraint) for fast lookups.
+
+## Documentation
+
+- **README.md**: Overview of the project, architecture, and features.
+- **CONTRIBUTING.md**: Guidelines for contributing to the project.
+- **Inline Comments**: Refer to the C# code in `App_Code/` for detailed implementation logic.
+
+## Extending the Application
+
+1. **Adding New Search Engines**: Create a new method in `BLL.cs` to handle different search result HTML structures.
+2. **Custom Validation**: Add new rules to the email validation logic to filter out more noise.
+3. **Export Formats**: Modify `PrintMails.ashx` to support CSV or Excel export by changing the `Response.ContentType`.
+4. **Scheduled Tasks**: Use Windows Task Scheduler to call `FetchMails.ashx` periodically using `curl` or `powershell`.
+
+## External Resources
+
+- [.NET Framework 3.5 Documentation](https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed)
+- [LINQ to SQL Overview](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/linq/index)
+- [SQL Server Express Download](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [IIS Configuration Guide](https://docs.microsoft.com/en-us/iis/get-started/getting-started-with-iis/getting-started-with-the-default-document-on-iis)
+
 ## Troubleshooting
 
 ### Common Issues
@@ -209,8 +313,8 @@ cv-spider-v2/
 
 ## Author
 
-* **Or Assayag** - *Initial work* - [orassayag](https://github.com/orassayag)
-* Or Assayag <orassayag@gmail.com>
-* GitHub: https://github.com/orassayag
-* StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
-* LinkedIn: https://linkedin.com/in/orassayag
+- **Or Assayag** - _Initial work_ - [orassayag](https://github.com/orassayag)
+- Or Assayag <orassayag@gmail.com>
+- GitHub: https://github.com/orassayag
+- StackOverflow: https://stackoverflow.com/users/4442606/or-assayag?tab=profile
+- LinkedIn: https://linkedin.com/in/orassayag
